@@ -1,42 +1,39 @@
 package com.elearning.platform_backend.entities;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "evaluacion")
+@Table(name = "resultado_evaluacion")
 @Data
 @NoArgsConstructor
-public class Evaluacion {
+@AllArgsConstructor
+public class ResultadoEvaluacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String titulo;
+    private Double nota;
 
-    @Enumerated(EnumType.STRING)
-    private TipoEvaluacion tipo;
+    private String respuestaTexto;
 
-    private String descripcion;
+    private LocalDateTime fecha;
 
     @ManyToOne
-    @JoinColumn(name = "curso_id")
-    private Curso curso;
+    @JoinColumn(name = "inscripcion_id")
+    private Inscripcion inscripcion;
 
-    private Integer puntajeMinimo;
-
-    @OneToMany(mappedBy = "evaluacion")
-    private List<Pregunta> preguntas;
+    @ManyToOne
+    @JoinColumn(name = "evaluacion_id")
+    private Evaluacion evaluacion;
 }
