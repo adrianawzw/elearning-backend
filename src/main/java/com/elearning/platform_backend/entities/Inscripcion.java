@@ -35,6 +35,8 @@ public class Inscripcion {
 
     private String estado; // ACTIVO o FINALIZADO
 
+    private Double notaFinal;
+
     @OneToMany(mappedBy = "inscripcion")
     private List<Progreso> progresos;
 }
