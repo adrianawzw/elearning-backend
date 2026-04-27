@@ -3,6 +3,9 @@ package com.elearning.platform_backend.entities;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,12 +26,13 @@ public class Inscripcion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne 
     @JoinColumn(name = "estudiante_id")
     private Usuario estudiante;
 
     @ManyToOne
     @JoinColumn(name = "curso_id")
+    @JsonIgnoreProperties({ "contenidos", "evaluaciones", "inscripciones" })
     private Curso curso;
 
     private LocalDateTime fechaInscripcion;
@@ -38,5 +42,6 @@ public class Inscripcion {
     private Double notaFinal;
 
     @OneToMany(mappedBy = "inscripcion")
+    @JsonIgnore
     private List<Progreso> progresos;
 }

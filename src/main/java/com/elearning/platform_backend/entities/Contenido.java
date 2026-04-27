@@ -2,6 +2,9 @@ package com.elearning.platform_backend.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,8 +33,10 @@ public class Contenido {
 
     @ManyToOne
     @JoinColumn(name = "curso_id")
+    @JsonIgnoreProperties({ "contenidos", "evaluaciones", "inscripciones" })
     private Curso curso;
 
     @OneToMany(mappedBy = "contenido")
+    @JsonIgnore
     private List<Progreso> progresos;
 }
