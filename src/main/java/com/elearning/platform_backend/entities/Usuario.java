@@ -3,6 +3,8 @@ package com.elearning.platform_backend.entities;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -42,8 +44,10 @@ public class Usuario {
     private LocalDateTime fechaRegistro;
 
     @OneToMany(mappedBy = "docente")
+   
     private List<Curso> cursos;
 
     @OneToMany(mappedBy = "estudiante")
+    
     private List<Inscripcion> inscripciones;
 }
