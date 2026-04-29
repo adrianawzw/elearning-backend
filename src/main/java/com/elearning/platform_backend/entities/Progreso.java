@@ -2,6 +2,8 @@ package com.elearning.platform_backend.entities;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,10 +25,12 @@ public class Progreso {
 
     @ManyToOne
     @JoinColumn(name = "inscripcion_id")
+    @JsonIgnoreProperties("progresos")
     private Inscripcion inscripcion;
 
     @ManyToOne
     @JoinColumn(name = "contenido_id")
+    @JsonIgnoreProperties("progresos")
     private Contenido contenido;
 
     private Boolean completado;

@@ -1,5 +1,7 @@
 package com.elearning.platform_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,5 +31,6 @@ public class Pregunta {
 
     @ManyToOne
     @JoinColumn(name = "evaluacion_id")
+    @JsonIgnoreProperties("preguntas")
     private Evaluacion evaluacion;
 }
