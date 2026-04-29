@@ -2,7 +2,7 @@ package com.elearning.platform_backend.entities;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
@@ -42,6 +42,6 @@ public class Evaluacion {
     private Integer puntajeMinimo;
 
     @OneToMany(mappedBy = "evaluacion")
-    @JsonIgnore
+    @JsonIgnoreProperties("evaluacion")
     private List<Pregunta> preguntas;
 }

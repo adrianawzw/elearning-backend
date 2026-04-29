@@ -28,11 +28,12 @@ public class Inscripcion {
 
     @ManyToOne 
     @JoinColumn(name = "estudiante_id")
+    @JsonIgnoreProperties({ "cursos", "inscripciones" })
     private Usuario estudiante;
 
     @ManyToOne
     @JoinColumn(name = "curso_id")
-    @JsonIgnoreProperties({ "contenidos", "evaluaciones", "inscripciones" })
+    @JsonIgnoreProperties({ "contenidos", "evaluaciones", "inscripciones", "docente" })
     private Curso curso;
 
     private LocalDateTime fechaInscripcion;
