@@ -12,8 +12,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.elearning.platform_backend.entities.ResultadoEvaluacion;
-import com.elearning.platform_backend.repositories.ResultadoEvaluacionRepository;
+import com.elearning.platform_backend.features.evaluaciones.ResultadoEvaluacion;
+import com.elearning.platform_backend.features.evaluaciones.ResultadoEvaluacionRepository;
+import com.elearning.platform_backend.features.evaluaciones.ResultadoEvaluacionService;
 
 @ExtendWith(MockitoExtension.class)
 public class ResultadoEvaluacionServiceTest {

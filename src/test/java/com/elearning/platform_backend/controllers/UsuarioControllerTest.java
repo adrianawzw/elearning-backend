@@ -22,9 +22,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.elearning.platform_backend.entities.Rol;
-import com.elearning.platform_backend.entities.Usuario;
-import com.elearning.platform_backend.services.UsuarioService;
+import com.elearning.platform_backend.features.usuarios.Rol;
+import com.elearning.platform_backend.features.usuarios.UsuarioController;
+import com.elearning.platform_backend.features.usuarios.UsuarioReaderDTO;
+import com.elearning.platform_backend.features.usuarios.UsuarioService;
+import com.elearning.platform_backend.features.usuarios.UsuarioUpdateDTO;
+import com.elearning.platform_backend.features.usuarios.UsuarioWriterDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(UsuarioController.class)
@@ -39,47 +42,80 @@ public class UsuarioControllerTest {
     @MockitoBean
     private UsuarioService usuarioService;
 
-    private Usuario crearUsuario() {
-        Usuario u = new Usuario();
-        u.setNombre("Juan");
-        u.setEmail("juan@email.com");
-        u.setPassword("123456");
-        u.setRol(Rol.ESTUDIANTE);
-        u.setFechaRegistro(LocalDateTime.now());
-        return u;
+    private UsuarioReaderDTO crearUsuarioReaderDTO() {
+        return new UsuarioReaderDTO(
+                1L,
+                "juan@email.com",
+                "Juan",
+                "Perez",
+                Rol.ESTUDIANTE,
+                LocalDateTime.now(),
+                null,
+                "EST123"
+        );
+    }
+
+    private UsuarioWriterDTO crearUsuarioWriterDTO() {
+        return new UsuarioWriterDTO(
+                "juan@email.com",
+                "12345678", // Min 8 caracteres según validación
+                "Juan",
+                "Perez",
+                Rol.ESTUDIANTE,
+                null,
+                "EST123"
+        );
     }
 
     @Test
     void testGetAll() throws Exception {
-        List<Usuario> usuarios = List.of(crearUsuario());
+        /*List<Usuario> usuarios = List.of(crearUsuario());
 
-        when(usuarioService.listUsers()).thenReturn(usuarios);
+        when(usuarioService.findAll()).thenReturn(usuarios);
 
         mockMvc.perform(get("/api/v1/usuarios"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(usuarios)));
 
-        verify(usuarioService).listUsers();
+        verify(usuarioService).findAll();*/
+        List<UsuarioReaderDTO> usuarios = List.of(crearUsuarioReaderDTO());
+
+        when(usuarioService.findAll()).thenReturn(usuarios);
+
+        mockMvc.perform(get("/api/v1/usuarios"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(usuarios)));
+
+        verify(usuarioService).findAll();
     }
 
     @Test
     void testGetById() throws Exception {
-        Usuario usuario = crearUsuario();
+        /*Usuario usuario = crearUsuario();
 
-        when(usuarioService.getByID(1L)).thenReturn(usuario);
+        when(usuarioService.findById(1L)).thenReturn(usuario);
 
         mockMvc.perform(get("/api/v1/usuarios/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(usuario)));
 
-        verify(usuarioService).getByID(1L);
+        verify(usuarioService).findById(1L);*/
+        UsuarioReaderDTO dto = crearUsuarioReaderDTO();
+
+        when(usuarioService.findById(1L)).thenReturn(dto);
+
+        mockMvc.perform(get("/api/v1/usuarios/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(dto)));
+
+        verify(usuarioService).findById(1L);
     }
 
     @Test
     void testCreate() throws Exception {
-        Usuario usuario = crearUsuario();
+        /*Usuario usuario = crearUsuario();
 
-        when(usuarioService.createUser(any(Usuario.class))).thenReturn(usuario);
+        when(usuarioService.create(any(Usuario.class))).thenReturn(usuario);
 
         mockMvc.perform(post("/api/v1/usuarios")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -87,15 +123,27 @@ public class UsuarioControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().json(objectMapper.writeValueAsString(usuario)));
 
-        verify(usuarioService).createUser(any(Usuario.class));
+        verify(usuarioService).create(any(Usuario.class));*/
+        UsuarioWriterDTO writerDto = crearUsuarioWriterDTO();
+        UsuarioReaderDTO readerDto = crearUsuarioReaderDTO();
+
+        when(usuarioService.create(any(UsuarioWriterDTO.class))).thenReturn(readerDto);
+
+        mockMvc.perform(post("/api/v1/usuarios")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(writerDto)))
+                .andExpect(status().isCreated())
+                .andExpect(content().json(objectMapper.writeValueAsString(readerDto)));
+
+        verify(usuarioService).create(any(UsuarioWriterDTO.class));
     }
 
     @Test
     void testUpdate() throws Exception {
-        Usuario usuarioActualizado = crearUsuario();
+        /*Usuario usuarioActualizado = crearUsuario();
         usuarioActualizado.setNombre("Pedro");
 
-        when(usuarioService.updateUser(eq(1L), any(Usuario.class))).thenReturn(usuarioActualizado);
+        when(usuarioService.update(eq(1L), any(Usuario.class))).thenReturn(usuarioActualizado);
 
         mockMvc.perform(put("/api/v1/usuarios/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -103,16 +151,28 @@ public class UsuarioControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(usuarioActualizado)));
 
-        verify(usuarioService).updateUser(eq(1L), any(Usuario.class));
+        verify(usuarioService).update(eq(1L), any(Usuario.class));*/
+        UsuarioUpdateDTO updateDto = new UsuarioUpdateDTO("Pedro", "Gomez", null, "EST123");
+        UsuarioReaderDTO readerDto = crearUsuarioReaderDTO(); // Simula el retorno actualizado
+
+        when(usuarioService.update(eq(1L), any(UsuarioUpdateDTO.class))).thenReturn(readerDto);
+
+        mockMvc.perform(put("/api/v1/usuarios/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateDto)))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(readerDto)));
+
+        verify(usuarioService).update(eq(1L), any(UsuarioUpdateDTO.class));
     }
 
     @Test
     void testDelete() throws Exception {
-        doNothing().when(usuarioService).deleteUser(1L);
+        doNothing().when(usuarioService).deleteById(1L);
 
         mockMvc.perform(delete("/api/v1/usuarios/1"))
                 .andExpect(status().isNoContent());
 
-        verify(usuarioService).deleteUser(1L);
+        verify(usuarioService).deleteById(1L);
     }
 }

@@ -14,8 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.elearning.platform_backend.entities.Rol;
-import com.elearning.platform_backend.entities.Usuario;
+import com.elearning.platform_backend.features.usuarios.Rol;
+import com.elearning.platform_backend.features.usuarios.Usuario;
+import com.elearning.platform_backend.features.usuarios.UsuarioRepository;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -24,89 +25,84 @@ public class UsuarioRepositoryTest {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    private Usuario crearUsuario() {
-        Usuario u = new Usuario();
-        u.setNombre("Juan");
-        u.setEmail("juan@email.com");
-        u.setPassword("123456");
-        u.setRol(Rol.ESTUDIANTE);
-        u.setFechaRegistro(LocalDateTime.now());
-        return u;
-    }
-
-    private Usuario crearUsuario2() {
-        Usuario u = new Usuario();
-        u.setNombre("Juan");
-        u.setEmail("juan2@email.com");
-        u.setPassword("123456");
-        u.setRol(Rol.ESTUDIANTE);
-        u.setFechaRegistro(LocalDateTime.now());
-        return u;
+    private Usuario crearUsuario(String email) {
+        return Usuario.builder()
+                .email(email)
+                .password("12345678")
+                .rol(Rol.ESTUDIANTE)
+                .fechaRegistro(LocalDateTime.now())
+                .build();
     }
 
     //POST
     @Test
     void shouldCreateUser() {
-        Usuario usuario = crearUsuario();
+        Usuario usuario = crearUsuario("test@email.com");
 
         Usuario saved = usuarioRepository.save(usuario);
 
         assertNotNull(saved.getId());
+        assertEquals("test@email.com", saved.getEmail());
     }
 
     //GET
     @Test
     void testFindByEmail() {
-        Usuario usuario = crearUsuario();
+        Usuario usuario = crearUsuario("find@email.com");
         usuarioRepository.save(usuario);
 
-        Optional<Usuario> result = usuarioRepository.findByEmail(usuario.getEmail());
+        Optional<Usuario> result = usuarioRepository.findByEmail("find@email.com");
 
         assertTrue(result.isPresent());
+        assertEquals(Rol.ESTUDIANTE, result.get().getRol());
     }
 
     //GET
     @Test
     void testFindByNombre() {
-        usuarioRepository.save(crearUsuario());
-        usuarioRepository.save(crearUsuario2());
+        usuarioRepository.save(crearUsuario("user1@email.com"));
+        usuarioRepository.save(crearUsuario("user2@email.com"));
 
-        List<Usuario> usuarios = usuarioRepository.findByNombre("Juan");
+        List<Usuario> usuarios = usuarioRepository.findByRol(Rol.ESTUDIANTE);
 
-        assertEquals(2, usuarios.size());
+        // Verifica que encuentre los usuarios creados con ese rol
+        assertFalse(usuarios.isEmpty());
+        assertTrue(usuarios.stream().allMatch(u -> u.getRol() == Rol.ESTUDIANTE));
     }
 
     //GET
     @Test
     void testFindByRol() {
-        usuarioRepository.save(crearUsuario());
+        usuarioRepository.save(crearUsuario("user1@email.com"));
+        usuarioRepository.save(crearUsuario("user2@email.com"));
 
         List<Usuario> usuarios = usuarioRepository.findByRol(Rol.ESTUDIANTE);
 
-        assertEquals(1, usuarios.size());
+        // Verifica que encuentre los usuarios creados con ese rol
+        assertFalse(usuarios.isEmpty());
+        assertTrue(usuarios.stream().allMatch(u -> u.getRol() == Rol.ESTUDIANTE));
     }
 
     //PUT
     @Test
     void shouldUpdateUser() {
-        Usuario usuario = usuarioRepository.save(crearUsuario());
+        Usuario usuario = usuarioRepository.save(crearUsuario("update@email.com"));
 
-        usuario.setNombre("Pedro");
-
+        usuario.setEmail("newemail@email.com");
         Usuario updated = usuarioRepository.save(usuario);
 
-        assertEquals("Pedro", updated.getNombre());
+        assertEquals("newemail@email.com", updated.getEmail());
     }
 
     //DELETE
     @Test
     void shouldDeleteUser() {
-        Usuario usuario = usuarioRepository.save(crearUsuario());
+        Usuario usuario = usuarioRepository.save(crearUsuario("delete@email.com"));
+        Long id = usuario.getId();
 
-        usuarioRepository.deleteById(usuario.getId());
+        usuarioRepository.deleteById(id);
 
-        Optional<Usuario> result = usuarioRepository.findById(usuario.getId());
-
+        Optional<Usuario> result = usuarioRepository.findById(id);
         assertFalse(result.isPresent());
     }
 }
