@@ -16,42 +16,42 @@ public class CursoController {
     private final CursoService cursoService;
 
     @GetMapping
-    public ResponseEntity<List<Curso>> getAll() {
+    public ResponseEntity<List<CursoReaderDTO>> getAll() {
         return ResponseEntity.ok(
-                cursoService.listarTodos());
+                cursoService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Curso> getById(
+    public ResponseEntity<CursoReaderDTO> getById(
             @PathVariable Long id) {
 
         return ResponseEntity.ok(
-                cursoService.buscarPorId(id));
+                cursoService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Curso> create(
-            @RequestBody Curso curso) {
+    public ResponseEntity<CursoReaderDTO> create(
+            @RequestBody CursoWriterDTO curso) {
 
         return new ResponseEntity<>(
-                cursoService.guardar(curso),
+                cursoService.create(curso),
                 HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Curso> update(
+    public ResponseEntity<CursoReaderDTO> update(
             @PathVariable Long id,
-            @RequestBody Curso curso) {
+            @RequestBody CursoUpdateDTO curso) throws Exception {
 
         return ResponseEntity.ok(
-                cursoService.actualizar(id, curso));
+                cursoService.update(id, curso));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(
-            @PathVariable Long id) {
+            @PathVariable Long id) throws Exception {
 
-        cursoService.eliminar(id);
+        cursoService.deleteById(id);
 
         return ResponseEntity
                 .noContent()

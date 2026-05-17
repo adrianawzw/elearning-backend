@@ -38,4 +38,18 @@ public class UsuarioMapper {
                 codigoAlumno
         );
     }
+
+    // Para el GET (Lectura) - Leer el docente individualmente para reutilizarlo en el Mapper de Curso
+    public static UsuarioReaderDTO tDto(Docente docente) {
+        return new UsuarioReaderDTO(
+                docente.getUsuario().getId(),
+                docente.getUsuario().getEmail(),
+                docente.getNombres(),
+                docente.getApellidos(),
+                docente.getUsuario().getRol(),
+                docente.getUsuario().getFechaRegistro(),
+                docente.getEspecialidad(),
+                null
+        );
+    }
 }
