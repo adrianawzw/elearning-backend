@@ -57,6 +57,10 @@ public class UsuarioService {
         return UsuarioMapper.toDto(user, docente, estudiante);
     }
 
+    public Usuario finByEmail(String email){
+        return usuarioRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
     public List<UsuarioReaderDTO> findAll() {
         if (usuarioRepository.count() == 0) throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay usuarios registrados");
         
