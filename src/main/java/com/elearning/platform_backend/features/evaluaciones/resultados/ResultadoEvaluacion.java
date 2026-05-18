@@ -1,7 +1,8 @@
-package com.elearning.platform_backend.features.evaluaciones;
+package com.elearning.platform_backend.features.evaluaciones.resultados;
 
 import java.time.LocalDateTime;
 
+import com.elearning.platform_backend.features.evaluaciones.Evaluacion;
 import com.elearning.platform_backend.features.inscripciones.Inscripcion;
 
 import jakarta.persistence.Entity;

@@ -8,4 +8,6 @@ import java.util.List;
 public interface InscripcionRepository extends JpaRepository<Inscripcion, Long>{
 
     List<Inscripcion> findByEstado(String estado);
+    List<Inscripcion> findByEstudianteId(Long estudianteId);
+    List<Inscripcion> findByCursoId(Long cursoId);
 }

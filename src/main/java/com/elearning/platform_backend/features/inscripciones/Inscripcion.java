@@ -4,7 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.elearning.platform_backend.features.cursos.Curso;
-import com.elearning.platform_backend.features.usuarios.Estudiante;
+import com.elearning.platform_backend.features.inscripciones.progreso.Progreso;
+import com.elearning.platform_backend.features.usuarios.estudiantes.Estudiante;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

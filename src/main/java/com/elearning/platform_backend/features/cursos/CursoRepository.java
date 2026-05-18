@@ -9,5 +9,5 @@ public interface CursoRepository extends JpaRepository<Curso, Long>{
     
     Optional<Curso> findByTitulo(String titulo);
     List<Curso> findByTituloContainingIgnoreCase(String titulo);
-
+    List<Curso> findByDocenteId(Long docenteId);
 }

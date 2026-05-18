@@ -3,6 +3,7 @@ package com.elearning.platform_backend.features.evaluaciones;
 import java.util.List;
 
 import com.elearning.platform_backend.features.cursos.Curso;
+import com.elearning.platform_backend.features.evaluaciones.preguntas.Pregunta;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;

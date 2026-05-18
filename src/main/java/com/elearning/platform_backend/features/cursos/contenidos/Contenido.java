@@ -1,8 +1,9 @@
-package com.elearning.platform_backend.features.cursos;
+package com.elearning.platform_backend.features.cursos.contenidos;
 
 import java.util.List;
 
-import com.elearning.platform_backend.features.inscripciones.Progreso;
+import com.elearning.platform_backend.features.cursos.Curso;
+import com.elearning.platform_backend.features.inscripciones.progreso.Progreso;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

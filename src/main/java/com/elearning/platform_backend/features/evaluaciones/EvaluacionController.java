@@ -29,6 +29,13 @@ public class EvaluacionController {
                 evaluacionService.buscarPorId(id));
     }
 
+    @GetMapping("/curso/{id}")
+    public List<Evaluacion> getByCursoId(
+            @PathVariable Long id){
+
+        return evaluacionService.buscarPorCurso(id);
+    }
+
     @PostMapping
     public ResponseEntity<Evaluacion> create(
             @RequestBody Evaluacion evaluacion) {

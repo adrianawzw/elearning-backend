@@ -1,4 +1,4 @@
-package com.elearning.platform_backend.features.usuarios;
+package com.elearning.platform_backend.features.usuarios.docentes;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.elearning.platform_backend.features.cursos.Curso;
+import com.elearning.platform_backend.features.usuarios.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;

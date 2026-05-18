@@ -1,7 +1,9 @@
 package com.elearning.platform_backend.features.usuarios;
 
+import com.elearning.platform_backend.features.usuarios.docentes.Docente;
+import com.elearning.platform_backend.features.usuarios.estudiantes.Estudiante;
+
 public class UsuarioMapper {
-    // Para el POST (Registro) - Convierte DTO a la entidad base Usuario
     public static Usuario toEntity(UsuarioWriterDTO dto) {
         return Usuario.builder()
                 .email(dto.email())
@@ -10,7 +12,6 @@ public class UsuarioMapper {
                 .build();
     }
 
-    // Para el GET (Lectura) - Combina Usuario y Perfil en un solo DTO
     public static UsuarioReaderDTO toDto(Usuario user, Docente docente, Estudiante estudiante) {
         String nombres = "";
         String apellidos = "";
@@ -39,7 +40,6 @@ public class UsuarioMapper {
         );
     }
 
-    // Para el GET (Lectura) - Leer el docente individualmente para reutilizarlo en el Mapper de Curso
     public static UsuarioReaderDTO tDto(Docente docente) {
         return new UsuarioReaderDTO(
                 docente.getUsuario().getId(),
