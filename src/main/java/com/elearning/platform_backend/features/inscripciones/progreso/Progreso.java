@@ -1,8 +1,9 @@
-package com.elearning.platform_backend.features.inscripciones;
+package com.elearning.platform_backend.features.inscripciones.progreso;
 
 import java.time.LocalDateTime;
 
-import com.elearning.platform_backend.features.cursos.Contenido;
+import com.elearning.platform_backend.features.cursos.contenidos.Contenido;
+import com.elearning.platform_backend.features.inscripciones.Inscripcion;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;

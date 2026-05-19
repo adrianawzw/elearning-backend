@@ -1,4 +1,4 @@
-package com.elearning.platform_backend.features.evaluaciones;
+package com.elearning.platform_backend.features.evaluaciones.preguntas;
 
 import java.util.List;
 

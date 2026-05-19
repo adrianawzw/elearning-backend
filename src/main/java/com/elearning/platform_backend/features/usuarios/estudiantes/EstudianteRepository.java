@@ -1,4 +1,4 @@
-package com.elearning.platform_backend.features.usuarios;
+package com.elearning.platform_backend.features.usuarios.estudiantes;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

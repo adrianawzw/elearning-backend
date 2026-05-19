@@ -7,6 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.elearning.platform_backend.features.usuarios.docentes.Docente;
+import com.elearning.platform_backend.features.usuarios.docentes.DocenteRepository;
+import com.elearning.platform_backend.features.usuarios.estudiantes.Estudiante;
+import com.elearning.platform_backend.features.usuarios.estudiantes.EstudianteRepository;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -47,6 +52,7 @@ public class UsuarioService {
         return findById(usuarioGuardado.getId());
     }
 
+    //Operaciones de lectura en tablas Relacionadas (1)
     public UsuarioReaderDTO findById(Long id) {
         Usuario user = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
@@ -76,6 +82,7 @@ public class UsuarioService {
         usuarioRepository.deleteById(id);
     }
 
+    @Transactional
     public UsuarioReaderDTO update(Long id, UsuarioUpdateDTO dto) throws Exception {
 
         Usuario usuario = usuarioRepository.findById(id)

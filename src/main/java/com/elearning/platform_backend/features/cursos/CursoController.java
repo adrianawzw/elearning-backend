@@ -13,48 +13,55 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CursoController {
 
-    private final CursoService cursoService;
+        private final CursoService cursoService;
 
-    @GetMapping
-    public ResponseEntity<List<CursoReaderDTO>> getAll() {
-        return ResponseEntity.ok(
-                cursoService.findAll());
-    }
+        @GetMapping
+        public ResponseEntity<List<CursoReaderDTO>> getAll() {
+                return ResponseEntity.ok(
+                                cursoService.findAll());
+        }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CursoReaderDTO> getById(
-            @PathVariable Long id) {
+        @GetMapping("/{id}")
+        public ResponseEntity<CursoReaderDTO> getById(
+                        @PathVariable Long id) {
 
-        return ResponseEntity.ok(
-                cursoService.findById(id));
-    }
+                return ResponseEntity.ok(
+                                cursoService.findById(id));
+        }
 
-    @PostMapping
-    public ResponseEntity<CursoReaderDTO> create(
-            @RequestBody CursoWriterDTO curso) {
+        @PostMapping
+        public ResponseEntity<CursoReaderDTO> create(
+                        @RequestBody CursoWriterDTO curso) {
 
-        return new ResponseEntity<>(
-                cursoService.create(curso),
-                HttpStatus.CREATED);
-    }
+                return new ResponseEntity<>(
+                                cursoService.create(curso),
+                                HttpStatus.CREATED);
+        }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CursoReaderDTO> update(
-            @PathVariable Long id,
-            @RequestBody CursoUpdateDTO curso) throws Exception {
+        @PutMapping("/{id}")
+        public ResponseEntity<CursoReaderDTO> update(
+                        @PathVariable Long id,
+                        @RequestBody CursoUpdateDTO curso) throws Exception {
 
-        return ResponseEntity.ok(
-                cursoService.update(id, curso));
-    }
+                return ResponseEntity.ok(
+                                cursoService.update(id, curso));
+        }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(
-            @PathVariable Long id) throws Exception {
+        @DeleteMapping("/{id}")
+        public ResponseEntity<Void> delete(
+                        @PathVariable Long id) throws Exception {
 
-        cursoService.deleteById(id);
+                cursoService.deleteById(id);
 
-        return ResponseEntity
-                .noContent()
-                .build();
-    }
+                return ResponseEntity
+                                .noContent()
+                                .build();
+        }
+
+        @GetMapping("/docente/{id}")
+        public List<CursoReaderDTO> obtenerPorDocente(
+                        @PathVariable Long id) {
+
+                return cursoService.buscarPorDocente(id);
+        }
 }

@@ -1,11 +1,13 @@
 package com.elearning.platform_backend.features.cursos;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.elearning.platform_backend.features.cursos.contenidos.Contenido;
 import com.elearning.platform_backend.features.evaluaciones.Evaluacion;
 import com.elearning.platform_backend.features.inscripciones.Inscripcion;
-import com.elearning.platform_backend.features.usuarios.Docente;
+import com.elearning.platform_backend.features.usuarios.docentes.Docente;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
@@ -45,13 +47,13 @@ public class Curso {
 
     @OneToMany(mappedBy = "curso")
     @JsonIgnoreProperties("curso")
-    private List<Contenido> contenidos;
+    private List<Contenido> contenidos = new ArrayList<>();
 
     @OneToMany(mappedBy = "curso")
     @JsonIgnoreProperties("curso")
-    private List<Evaluacion> evaluaciones;
+    private List<Evaluacion> evaluaciones = new ArrayList<>();
 
     @OneToMany(mappedBy = "curso")
     @JsonIgnoreProperties("curso")
-    private List<Inscripcion> inscripciones;
+    private List<Inscripcion> inscripciones = new ArrayList<>();
 }

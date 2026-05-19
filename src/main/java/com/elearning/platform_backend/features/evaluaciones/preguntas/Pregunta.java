@@ -1,5 +1,6 @@
-package com.elearning.platform_backend.features.evaluaciones;
+package com.elearning.platform_backend.features.evaluaciones.preguntas;
 
+import com.elearning.platform_backend.features.evaluaciones.Evaluacion;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.elearning.platform_backend.features.evaluaciones;
+package com.elearning.platform_backend.features.evaluaciones.resultados;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

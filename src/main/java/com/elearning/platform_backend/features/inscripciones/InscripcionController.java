@@ -21,6 +21,20 @@ public class InscripcionController {
                 inscripcionService.listar());
     }
 
+    @GetMapping("/estudiante/{id}")
+    public List<Inscripcion> getByEstudianteId(
+            @PathVariable Long id) {
+
+        return inscripcionService.buscarPorEstudiante(id);
+    }
+
+    @GetMapping("/curso/{id}")
+    public List<Inscripcion> getByCursoId(
+            @PathVariable Long id) {
+
+        return inscripcionService.buscarPorCurso(id);
+    }
+
     @PostMapping
     public ResponseEntity<Inscripcion> create(
             @RequestBody Inscripcion inscripcion) {

@@ -1,4 +1,4 @@
-package com.elearning.platform_backend.features.cursos;
+package com.elearning.platform_backend.features.cursos.contenidos;
 
 import java.util.List;
 

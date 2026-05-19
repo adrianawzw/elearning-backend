@@ -1,9 +1,12 @@
 package com.elearning.platform_backend.features.cursos;
 
+import java.util.List;
+
+import com.elearning.platform_backend.features.cursos.contenidos.Contenido;
 import com.elearning.platform_backend.features.evaluaciones.Evaluacion;
 import com.elearning.platform_backend.features.inscripciones.Inscripcion;
-import com.elearning.platform_backend.features.usuarios.Docente;
 import com.elearning.platform_backend.features.usuarios.UsuarioMapper;
+import com.elearning.platform_backend.features.usuarios.docentes.Docente;
 
 public class CursoMapper {
     
@@ -18,7 +21,7 @@ public class CursoMapper {
 
     // Para el GET (Lectura) - Obtiene los datos de la entidad Curso y los convierte a DTO
     public static CursoReaderDTO toDto(Curso curso) {
-        return new CursoReaderDTO(
+        /*return new CursoReaderDTO(
                 curso.getId(),
                 curso.getTitulo(),
                 curso.getDescripcion(),
@@ -27,6 +30,19 @@ public class CursoMapper {
                 curso.getContenidos().stream().map(Contenido::getId).toList(),
                 curso.getEvaluaciones().stream().map(Evaluacion::getId).toList(),
                 curso.getInscripciones().stream().map(Inscripcion::getId).toList()
+        );*/
+        return new CursoReaderDTO(
+                curso.getId(),
+                curso.getTitulo(),
+                curso.getDescripcion(),
+                UsuarioMapper.tDto(curso.getDocente()),
+                curso.getFechaCreacion(),
+                curso.getContenidos() == null ? List.of() : 
+                    curso.getContenidos().stream().map(Contenido::getId).toList(),
+                curso.getEvaluaciones() == null ? List.of() : 
+                    curso.getEvaluaciones().stream().map(Evaluacion::getId).toList(),
+                curso.getInscripciones() == null ? List.of() : 
+                    curso.getInscripciones().stream().map(Inscripcion::getId).toList()
         );
     }
 }
