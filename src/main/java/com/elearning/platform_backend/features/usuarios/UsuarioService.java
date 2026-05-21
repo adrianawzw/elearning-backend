@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import com.elearning.platform_backend.features.usuarios.docentes.Docente;
 import com.elearning.platform_backend.features.usuarios.docentes.DocenteRepository;
 import com.elearning.platform_backend.features.usuarios.estudiantes.Estudiante;
@@ -22,6 +24,7 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final DocenteRepository docenteRepository;
     private final EstudianteRepository estudianteRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Transactional
     public UsuarioReaderDTO create(UsuarioWriterDTO dto) {
@@ -30,6 +33,7 @@ public class UsuarioService {
         }
 
         Usuario usuario = UsuarioMapper.toEntity(dto);
+        usuario.setPassword(passwordEncoder.encode(dto.password()));
         usuario.setFechaRegistro(LocalDateTime.now());
         Usuario usuarioGuardado = usuarioRepository.save(usuario);
 

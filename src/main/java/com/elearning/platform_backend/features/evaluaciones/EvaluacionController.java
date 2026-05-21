@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -16,59 +18,46 @@ public class EvaluacionController {
     private final EvaluacionService evaluacionService;
 
     @GetMapping
-    public ResponseEntity<List<Evaluacion>> getAll() {
-        return ResponseEntity.ok(
-                evaluacionService.listar());
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<EvaluacionReaderDTO>> getAll() {
+        return ResponseEntity.ok(evaluacionService.listar());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Evaluacion> getById(
-            @PathVariable Long id) {
-
-        return ResponseEntity.ok(
-                evaluacionService.buscarPorId(id));
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<EvaluacionReaderDTO> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(evaluacionService.buscarPorId(id));
     }
 
-    @GetMapping("/curso/{id}")
-    public List<Evaluacion> getByCursoId(
-            @PathVariable Long id){
+    @GetMapping("/curso/{cursoId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<EvaluacionReaderDTO>> getByCurso(@PathVariable Long cursoId) {
+        return ResponseEntity.ok(evaluacionService.buscarPorCurso(cursoId));
+    }
 
-        return evaluacionService.buscarPorCurso(id);
+    @GetMapping("/tipo/{tipo}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<EvaluacionReaderDTO>> getByTipo(@PathVariable TipoEvaluacion tipo) {
+        return ResponseEntity.ok(evaluacionService.buscarPorTipo(tipo));
     }
 
     @PostMapping
-    public ResponseEntity<Evaluacion> create(
-            @RequestBody Evaluacion evaluacion) {
-
-        return new ResponseEntity<>(
-                evaluacionService.guardar(evaluacion),
-                HttpStatus.CREATED);
+    @PreAuthorize("hasRole('DOCENTE')")
+    public ResponseEntity<EvaluacionReaderDTO> create(@Valid @RequestBody EvaluacionWriterDTO dto) {
+        return new ResponseEntity<>(evaluacionService.guardar(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Evaluacion> update(
-            @PathVariable Long id,
-            @RequestBody Evaluacion evaluacion) {
-
-        Evaluacion evaluacionActual = evaluacionService.buscarPorId(id);
-        evaluacionActual.setTitulo(evaluacion.getTitulo());
-        evaluacionActual.setTipo(evaluacion.getTipo());
-        evaluacionActual.setDescripcion(evaluacion.getDescripcion());
-        evaluacionActual.setCurso(evaluacion.getCurso());
-        evaluacionActual.setPuntajeMinimo(evaluacion.getPuntajeMinimo());
-
-        return ResponseEntity.ok(
-                evaluacionService.guardar(evaluacionActual));
+    @PreAuthorize("hasRole('DOCENTE')")
+    public ResponseEntity<EvaluacionReaderDTO> update(@PathVariable Long id,
+            @Valid @RequestBody EvaluacionUpdateDTO dto) {
+        return ResponseEntity.ok(evaluacionService.actualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(
-            @PathVariable Long id) {
-
+    @PreAuthorize("hasRole('DOCENTE')")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         evaluacionService.eliminar(id);
-
-        return ResponseEntity
-                .noContent()
-                .build();
+        return ResponseEntity.noContent().build();
     }
 }

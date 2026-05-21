@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
@@ -16,12 +17,14 @@ public class CursoController {
         private final CursoService cursoService;
 
         @GetMapping
+        @PreAuthorize("isAuthenticated()")
         public ResponseEntity<List<CursoReaderDTO>> getAll() {
                 return ResponseEntity.ok(
                                 cursoService.findAll());
         }
 
         @GetMapping("/{id}")
+        @PreAuthorize("isAuthenticated()")
         public ResponseEntity<CursoReaderDTO> getById(
                         @PathVariable Long id) {
 
@@ -30,6 +33,7 @@ public class CursoController {
         }
 
         @PostMapping
+        @PreAuthorize("hasRole('DOCENTE')")
         public ResponseEntity<CursoReaderDTO> create(
                         @RequestBody CursoWriterDTO curso) {
 
@@ -39,6 +43,7 @@ public class CursoController {
         }
 
         @PutMapping("/{id}")
+        @PreAuthorize("hasRole('DOCENTE')")
         public ResponseEntity<CursoReaderDTO> update(
                         @PathVariable Long id,
                         @RequestBody CursoUpdateDTO curso) throws Exception {
@@ -48,6 +53,7 @@ public class CursoController {
         }
 
         @DeleteMapping("/{id}")
+        @PreAuthorize("hasRole('DOCENTE')")
         public ResponseEntity<Void> delete(
                         @PathVariable Long id) throws Exception {
 
@@ -59,6 +65,7 @@ public class CursoController {
         }
 
         @GetMapping("/docente/{id}")
+        @PreAuthorize("isAuthenticated()")
         public List<CursoReaderDTO> obtenerPorDocente(
                         @PathVariable Long id) {
 

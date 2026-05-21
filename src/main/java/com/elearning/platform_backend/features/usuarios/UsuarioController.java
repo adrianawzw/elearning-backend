@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,12 +25,14 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
 
     @GetMapping
+    @PreAuthorize("hasRole('DOCENTE')")
     public ResponseEntity<List<UsuarioReaderDTO>> getAll() {
         return ResponseEntity.ok(
                 usuarioService.findAll());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UsuarioReaderDTO> getById(
             @PathVariable Long id) {
 
@@ -40,6 +43,7 @@ public class UsuarioController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('DOCENTE')")
     public ResponseEntity<UsuarioReaderDTO> insertUser(
             @RequestBody UsuarioWriterDTO usuario) {
 
@@ -49,6 +53,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('DOCENTE')")
     public ResponseEntity<Void> deleteById(
             @PathVariable Long id) throws Exception{
 
@@ -60,6 +65,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UsuarioReaderDTO> update(
             @PathVariable Long id,
             @RequestBody UsuarioUpdateDTO usuario) throws Exception{
