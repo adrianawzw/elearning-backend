@@ -62,8 +62,7 @@ public class UsuarioControllerTest {
                 "Juan",
                 "Perez",
                 Rol.ESTUDIANTE,
-                null,
-                "EST123"
+                null
         );
     }
 

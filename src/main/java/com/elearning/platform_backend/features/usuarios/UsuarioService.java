@@ -49,7 +49,7 @@ public class UsuarioService {
             estudiante.setUsuario(usuarioGuardado);
             estudiante.setNombres(dto.nombres());
             estudiante.setApellidos(dto.apellidos());
-            estudiante.setCodigoAlumno(dto.codigoAlumno());
+            estudiante.setCodigoAlumno(generarCodigoAlumno());
             estudianteRepository.save(estudiante);
         }
 
@@ -112,4 +112,11 @@ public class UsuarioService {
 
         return findById(id);
     }
+
+    private String generarCodigoAlumno() {
+
+    long cantidad = estudianteRepository.count() + 1;
+
+    return String.format("E%04d", cantidad);
+}
 }
