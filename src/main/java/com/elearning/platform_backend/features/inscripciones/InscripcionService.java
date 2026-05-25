@@ -1,11 +1,18 @@
 package com.elearning.platform_backend.features.inscripciones;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.elearning.platform_backend.features.cursos.Curso;
+import com.elearning.platform_backend.features.cursos.CursoRepository;
+import com.elearning.platform_backend.features.usuarios.estudiantes.Estudiante;
+import com.elearning.platform_backend.features.usuarios.estudiantes.EstudianteRepository;
+
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -13,48 +20,67 @@ import lombok.RequiredArgsConstructor;
 public class InscripcionService {
 
     private final InscripcionRepository inscripcionRepository;
+    private final EstudianteRepository estudianteRepository;
+    private final CursoRepository cursoRepository;
 
-    public List<Inscripcion> listar() {
-        return inscripcionRepository.findAll();
-    }
-
-    public Inscripcion guardar(Inscripcion i) {
-        return inscripcionRepository.save(i);
-    }
-
-    public List<Inscripcion> buscarPorEstado(String estado) {
-        return inscripcionRepository.findByEstado(estado);
-    }
-
-    public void eliminar(Long id) {
-        inscripcionRepository.deleteById(id);
+    public List<InscripcionReaderDTO> listar() {
+        return inscripcionRepository.findAll().stream()
+                .map(InscripcionMapper::toDto)
+                .toList();
     }
 
     // Operaciones de lectura en tablas Relacionadas (3)
-    public List<Inscripcion> buscarPorEstudiante(Long estudianteId) {
-
+    public List<InscripcionReaderDTO> buscarPorEstudiante(Long estudianteId) {
         List<Inscripcion> inscripciones = inscripcionRepository.findByEstudianteId(estudianteId);
-
-        if (inscripciones.isEmpty()) {
-            throw new ResponseStatusException(
-                    HttpStatus.NO_CONTENT,
-                    "El estudiante no tiene inscripciones");
-        }
-
-        return inscripciones;
+        if (inscripciones.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "El estudiante no tiene inscripciones");
+        return inscripciones.stream().map(InscripcionMapper::toDto).toList();
     }
 
     // Operaciones de lectura en tablas Relacionadas (6)
-    public List<Inscripcion> buscarPorCurso(Long cursoId) {
+    public List<InscripcionReaderDTO> buscarPorCurso(Long cursoId) {
+        List<Inscripcion> inscripciones = inscripcionRepository.findByCursoId(cursoId);
+        if (inscripciones.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "El curso no tiene inscripciones");
+        return inscripciones.stream().map(InscripcionMapper::toDto).toList();
+    }
 
-       List<Inscripcion> inscripciones = inscripcionRepository.findByCursoId(cursoId);
+    public List<InscripcionReaderDTO> buscarPorEstado(String estado) {
+        List<Inscripcion> inscripciones = inscripcionRepository.findByEstado(estado);
+        if (inscripciones.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay inscripciones con ese estado");
+        return inscripciones.stream().map(InscripcionMapper::toDto).toList();
+    }
 
-        if (inscripciones.isEmpty()) {
-            throw new ResponseStatusException(
-                    HttpStatus.NO_CONTENT,
-                    "El curso no tiene inscripciones");
-        }
+    // Operaciones de escritura en tablas Relacionadas (1)
+    @Transactional
+    public InscripcionReaderDTO guardar(InscripcionWriterDTO dto) {
+        Estudiante estudiante = estudianteRepository.findById(dto.estudianteId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Estudiante no encontrado"));
+        Curso curso = cursoRepository.findById(dto.cursoId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso no encontrado"));
 
-        return inscripciones;
+        Inscripcion inscripcion = new Inscripcion();
+        inscripcion.setEstudiante(estudiante);
+        inscripcion.setCurso(curso);
+        inscripcion.setEstado(dto.estado());
+        inscripcion.setFechaInscripcion(LocalDateTime.now());
+
+        return InscripcionMapper.toDto(inscripcionRepository.save(inscripcion));
+    }
+
+    // Operaciones de actualización en tablas Relacionadas (1)
+    @Transactional
+    public InscripcionReaderDTO actualizarEstado(Long id, String estado) {
+        Inscripcion inscripcion = inscripcionRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Inscripcion no encontrada"));
+        inscripcion.setEstado(estado);
+        return InscripcionMapper.toDto(inscripcionRepository.save(inscripcion));
+    }
+
+    public void eliminar(Long id) {
+        if (!inscripcionRepository.existsById(id))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Inscripcion no encontrada");
+        inscripcionRepository.deleteById(id);
     }
 }

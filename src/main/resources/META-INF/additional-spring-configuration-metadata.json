@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "application.jwt.secret-key",
+    "type": "java.lang.String",
+    "description": "A description for 'application.jwt.secret-key'"
+  },
+  {
+    "name": "application.jwt.token-expiration-after-days",
+    "type": "java.lang.String",
+    "description": "A description for 'application.jwt.token-expiration-after-days'"
+  },
+  {
+    "name": "application.jwt.refresh-token-expiration-after-days",
+    "type": "java.lang.String",
+    "description": "A description for 'application.jwt.refresh-token-expiration-after-days'"
+  },
+  {
+    "name": "application.jwt.token-prefix",
+    "type": "java.lang.String",
+    "description": "A description for 'application.jwt.token-prefix'"
+  }
+]}

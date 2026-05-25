@@ -6,52 +6,50 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/inscripciones")
+@RequestMapping("/inscripciones")
 @RequiredArgsConstructor
 public class InscripcionController {
 
     private final InscripcionService inscripcionService;
 
     @GetMapping
-    public ResponseEntity<List<Inscripcion>> getAll() {
-        return ResponseEntity.ok(
-                inscripcionService.listar());
+    public ResponseEntity<List<InscripcionReaderDTO>> getAll() {
+        return ResponseEntity.ok(inscripcionService.listar());
     }
 
     @GetMapping("/estudiante/{id}")
-    public List<Inscripcion> getByEstudianteId(
-            @PathVariable Long id) {
-
-        return inscripcionService.buscarPorEstudiante(id);
+    public ResponseEntity<List<InscripcionReaderDTO>> getByEstudiante(@PathVariable Long id) {
+        return ResponseEntity.ok(inscripcionService.buscarPorEstudiante(id));
     }
 
     @GetMapping("/curso/{id}")
-    public List<Inscripcion> getByCursoId(
-            @PathVariable Long id) {
+    public ResponseEntity<List<InscripcionReaderDTO>> getByCurso(@PathVariable Long id) {
+        return ResponseEntity.ok(inscripcionService.buscarPorCurso(id));
+    }
 
-        return inscripcionService.buscarPorCurso(id);
+    @GetMapping("/estado/{estado}")
+    public ResponseEntity<List<InscripcionReaderDTO>> getByEstado(@PathVariable String estado) {
+        return ResponseEntity.ok(inscripcionService.buscarPorEstado(estado));
     }
 
     @PostMapping
-    public ResponseEntity<Inscripcion> create(
-            @RequestBody Inscripcion inscripcion) {
+    public ResponseEntity<InscripcionReaderDTO> create(@Valid @RequestBody InscripcionWriterDTO dto) {
+        return new ResponseEntity<>(inscripcionService.guardar(dto), HttpStatus.CREATED);
+    }
 
-        return new ResponseEntity<>(
-                inscripcionService.guardar(inscripcion),
-                HttpStatus.CREATED);
+    @PatchMapping("/{id}/estado")
+    public ResponseEntity<InscripcionReaderDTO> updateEstado(@PathVariable Long id,
+            @RequestParam String estado) {
+        return ResponseEntity.ok(inscripcionService.actualizarEstado(id, estado));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(
-            @PathVariable Long id) {
-
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         inscripcionService.eliminar(id);
-
-        return ResponseEntity
-                .noContent()
-                .build();
+        return ResponseEntity.noContent().build();
     }
 }

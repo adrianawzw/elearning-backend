@@ -1,12 +1,12 @@
 package com.elearning.platform_backend.features.cursos.contenidos;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+public interface ContenidoRepository extends JpaRepository<Contenido, Long> {
 
-public interface ContenidoRepository extends JpaRepository<Contenido, Long>{
+    List<Contenido> findAllByTipo(String tipo);
 
-    Optional<Contenido> findByTipo(String tipo);
-
+    List<Contenido> findByCursoId(Long cursoId);
 }

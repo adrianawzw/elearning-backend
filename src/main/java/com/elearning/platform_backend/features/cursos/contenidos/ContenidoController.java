@@ -4,63 +4,53 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/contenidos")
+@RequestMapping("/contenidos")
 @RequiredArgsConstructor
 public class ContenidoController {
 
     private final ContenidoService contenidoService;
 
     @GetMapping
-    public ResponseEntity<List<Contenido>> getAll() {
-        return ResponseEntity.ok(
-                contenidoService.listarTodos());
+    public ResponseEntity<List<ContenidoReaderDTO>> getAll() {
+        return ResponseEntity.ok(contenidoService.listarTodos());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Contenido> getById(
-            @PathVariable Long id) {
+    public ResponseEntity<ContenidoReaderDTO> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(contenidoService.buscarPorId(id));
+    }
 
-        return ResponseEntity.ok(
-                contenidoService.buscarPorId(id));
+    @GetMapping("/tipo/{tipo}")
+    public ResponseEntity<List<ContenidoReaderDTO>> getByTipo(@PathVariable String tipo) {
+        return ResponseEntity.ok(contenidoService.buscarPorTipo(tipo));
+    }
+
+    @GetMapping("/curso/{cursoId}")
+    public ResponseEntity<List<ContenidoReaderDTO>> getByCurso(@PathVariable Long cursoId) {
+        return ResponseEntity.ok(contenidoService.buscarPorCurso(cursoId));
     }
 
     @PostMapping
-    public ResponseEntity<Contenido> create(
-            @RequestBody Contenido contenido) {
-
-        return new ResponseEntity<>(
-                contenidoService.guardar(contenido),
-                HttpStatus.CREATED);
+    public ResponseEntity<ContenidoReaderDTO> create(@Valid @RequestBody ContenidoWriterDTO dto) {
+        return new ResponseEntity<>(contenidoService.guardar(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Contenido> update(
-            @PathVariable Long id,
-            @RequestBody Contenido contenido) {
-
-        Contenido contenidoActual = contenidoService.buscarPorId(id);
-        contenidoActual.setTitulo(contenido.getTitulo());
-        contenidoActual.setUrlMaterial(contenido.getUrlMaterial());
-        contenidoActual.setTipo(contenido.getTipo());
-        contenidoActual.setCurso(contenido.getCurso());
-
-        return ResponseEntity.ok(
-                contenidoService.guardar(contenidoActual));
+    public ResponseEntity<ContenidoReaderDTO> update(@PathVariable Long id,
+            @Valid @RequestBody ContenidoUpdateDTO dto) {
+        return ResponseEntity.ok(contenidoService.actualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(
-            @PathVariable Long id) {
-
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         contenidoService.eliminar(id);
-
-        return ResponseEntity
-                .noContent()
-                .build();
+        return ResponseEntity.noContent().build();
     }
 }
