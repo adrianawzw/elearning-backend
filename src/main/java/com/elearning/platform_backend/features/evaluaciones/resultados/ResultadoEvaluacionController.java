@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/resultados-evaluacion")
+@RequestMapping("/resultados-evaluacion")
 @RequiredArgsConstructor
 public class ResultadoEvaluacionController {
 

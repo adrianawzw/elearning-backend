@@ -31,11 +31,6 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtFilter;
 
     @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
@@ -47,44 +42,39 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/api/v1/auth/**")
+                        .requestMatchers("/auth/**")
                         .permitAll()
                         // USUARIOS
                         // SOLO DOCENTE
-                        .requestMatchers(HttpMethod.GET, "/api/v1/usuarios").hasRole("DOCENTE")
-                        .requestMatchers(HttpMethod.DELETE,"/api/v1/usuarios/**").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.GET, "/usuarios").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.DELETE,"/usuarios/**").hasRole("DOCENTE")
                         // DOCENTE Y ESTUDIANTE
-                        .requestMatchers(HttpMethod.POST,"/api/v1/usuarios/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
-                        .requestMatchers(HttpMethod.GET, "/api/v1/usuarios/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
-                        .requestMatchers(HttpMethod.PUT,"/api/v1/usuarios/**").hasAnyRole("DOCENTE","ESTUDIANTE")
+                        .requestMatchers(HttpMethod.POST,"/usuarios/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.GET, "/usuarios/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.PUT,"/usuarios/**").hasAnyRole("DOCENTE","ESTUDIANTE")
                         // CURSOS
-                        .requestMatchers(HttpMethod.GET, "/api/v1/cursos/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
-                        .requestMatchers(HttpMethod.POST, "/api/v1/cursos/**").hasRole("DOCENTE")
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/cursos/**").hasRole("DOCENTE")
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/cursos/**").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.GET, "/cursos/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.POST, "/cursos/**").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.PUT, "/cursos/**").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.DELETE, "/cursos/**").hasRole("DOCENTE")
                         // CONTENIDOS
-                        .requestMatchers(HttpMethod.GET, "/api/v1/contenidos/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
-                        .requestMatchers(HttpMethod.POST, "/api/v1/contenidos/**").hasRole("DOCENTE")
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/contenidos/**").hasRole("DOCENTE")
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/contenidos/**").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.GET, "/contenidos/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.POST, "/contenidos/**").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.PUT, "/contenidos/**").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.DELETE, "/contenidos/**").hasRole("DOCENTE")
                         // EVALUACIONES
-                        .requestMatchers(HttpMethod.GET, "/api/v1/evaluaciones/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
-                        .requestMatchers(HttpMethod.POST, "/api/v1/evaluaciones/**").hasRole("DOCENTE")
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/evaluaciones/**").hasRole("DOCENTE")
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/evaluaciones/**").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.GET, "/evaluaciones/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.POST, "/evaluaciones/**").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.PUT, "/evaluaciones/**").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.DELETE, "/evaluaciones/**").hasRole("DOCENTE")
                         // INSCRIPCIONES
-                        // SOLO DOCENTE
-                        .requestMatchers(HttpMethod.GET, "/api/v1/inscripciones").hasRole("DOCENTE")
-                        .requestMatchers(HttpMethod.GET, "/api/v1/inscripciones/estado/**").hasRole("DOCENTE")
-                        .requestMatchers(HttpMethod.PATCH, "/api/v1/inscripciones/**").hasRole("DOCENTE")
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/inscripciones/**").hasRole("DOCENTE")
-                        // DOCENTE Y ESTUDIANTE
-                        .requestMatchers(HttpMethod.GET, "/api/v1/inscripciones/estudiante/**")
-                        .hasAnyRole("DOCENTE", "ESTUDIANTE")
-                        .requestMatchers(HttpMethod.GET, "/api/v1/inscripciones/curso/**")
-                        .hasAnyRole("DOCENTE", "ESTUDIANTE")
-                        // SOLO ESTUDIANTE
-                        .requestMatchers(HttpMethod.POST, "/api/v1/inscripciones/**").hasRole("ESTUDIANTE")
+                        .requestMatchers(HttpMethod.GET, "/inscripciones").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.GET, "/inscripciones/estado/**").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.PATCH, "/inscripciones/**").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.DELETE, "/inscripciones/**").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.GET, "/inscripciones/estudiante/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.GET, "/inscripciones/curso/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.POST, "/inscripciones/**").hasRole("ESTUDIANTE")
 
                         .anyRequest()
                         .authenticated())

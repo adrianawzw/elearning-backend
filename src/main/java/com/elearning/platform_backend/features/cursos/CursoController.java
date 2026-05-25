@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/cursos")
+@RequestMapping("/cursos")
 @RequiredArgsConstructor
 public class CursoController {
 
