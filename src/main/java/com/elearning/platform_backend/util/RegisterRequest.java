@@ -1,7 +1,10 @@
 package com.elearning.platform_backend.util;
 
+import com.elearning.platform_backend.features.usuarios.Rol;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record RegisterRequest(
@@ -20,6 +23,13 @@ public record RegisterRequest(
 
     @NotBlank
     @Size(max = 100)
-    String apellidos
+    String apellidos,
+
+    @NotNull
+    Rol rol,
+
+    String especialidad,
+
+    String codigoAlumno
 
 ) {}

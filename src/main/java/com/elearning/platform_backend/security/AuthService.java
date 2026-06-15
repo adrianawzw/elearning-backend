@@ -32,8 +32,8 @@ public class AuthService {
                 request.password(),
                 request.nombres(),
                 request.apellidos(),
-                Rol.ESTUDIANTE,
-                null);
+                request.rol(),
+                request.especialidad());
 
         return usuarioService.create(dto);
     }
