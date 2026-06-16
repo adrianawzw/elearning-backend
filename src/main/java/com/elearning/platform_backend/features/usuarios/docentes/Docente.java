@@ -16,11 +16,13 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "docentes")
-@Data
+@Getter
+@Setter
 public class Docente {
     @Id
     private Long id;
