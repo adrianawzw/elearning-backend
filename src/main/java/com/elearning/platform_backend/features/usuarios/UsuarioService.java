@@ -56,7 +56,7 @@ public class UsuarioService {
         return findById(usuarioGuardado.getId());
     }
 
-    //Operaciones de lectura en tablas Relacionadas (1)
+    // Operaciones de lectura en tablas Relacionadas (1)
     public UsuarioReaderDTO findById(Long id) {
         Usuario user = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
@@ -67,13 +67,14 @@ public class UsuarioService {
         return UsuarioMapper.toDto(user, docente, estudiante);
     }
 
-    public Usuario finByEmail(String email){
+    public Usuario finByEmail(String email) {
         return usuarioRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public List<UsuarioReaderDTO> findAll() {
-        if (usuarioRepository.count() == 0) throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay usuarios registrados");
-        
+        if (usuarioRepository.count() == 0)
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay usuarios registrados");
+
         return usuarioRepository.findAll().stream()
                 .map(user -> findById(user.getId()))
                 .toList();
@@ -113,10 +114,18 @@ public class UsuarioService {
         return findById(id);
     }
 
+    public List<UsuarioReaderDTO> findDocentes() {
+
+        return usuarioRepository.findByRol(Rol.DOCENTE)
+                .stream()
+                .map(usuario -> findById(usuario.getId()))
+                .toList();
+    }
+
     private String generarCodigoAlumno() {
 
-    long cantidad = estudianteRepository.count() + 1;
+        long cantidad = estudianteRepository.count() + 1;
 
-    return String.format("E%04d", cantidad);
-}
+        return String.format("E%04d", cantidad);
+    }
 }
