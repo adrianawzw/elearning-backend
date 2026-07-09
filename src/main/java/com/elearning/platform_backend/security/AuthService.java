@@ -1,5 +1,8 @@
 package com.elearning.platform_backend.security;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -47,7 +50,9 @@ public class AuthService {
         );
         Usuario usuario = usuarioRepository.findByEmail(request.email()).orElseThrow();
 
-        String jwtToken = jwtService.generateToken(new CustomUserDetail(usuario));
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("rol", usuario.getRol().name());
+        String jwtToken = jwtService.generateToken(claims, new CustomUserDetail(usuario));
 
         return new AuthResponse(jwtToken);
     }
