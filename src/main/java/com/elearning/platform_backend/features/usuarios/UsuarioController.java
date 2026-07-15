@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class UsuarioController {
 
-    private final UsuarioService usuarioService;
+        private final UsuarioService usuarioService;
 
     @GetMapping("/me")
     public ResponseEntity<UsuarioReaderDTO> getMe(@AuthenticationPrincipal UserDetails userDetails) {
@@ -38,35 +38,35 @@ public class UsuarioController {
                 usuarioService.findAll());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UsuarioReaderDTO> getById(
-            @PathVariable Long id) {
+        @GetMapping("/{id}")
+        public ResponseEntity<UsuarioReaderDTO> getById(
+                        @PathVariable Long id) {
 
-        return ResponseEntity.ok(
-                usuarioService.findById(id)
+                return ResponseEntity.ok(
+                                usuarioService.findById(id)
 
-        );
-    }
+                );
+        }
 
-    @PostMapping
-    public ResponseEntity<UsuarioReaderDTO> insertUser(
-            @RequestBody UsuarioWriterDTO usuario) {
+        @PostMapping
+        public ResponseEntity<UsuarioReaderDTO> insertUser(
+                        @RequestBody UsuarioWriterDTO usuario) {
 
-        return new ResponseEntity<>(
-                usuarioService.create(usuario),
-                HttpStatus.CREATED);
-    }
+                return new ResponseEntity<>(
+                                usuarioService.create(usuario),
+                                HttpStatus.CREATED);
+        }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(
-            @PathVariable Long id) throws Exception{
+        @DeleteMapping("/{id}")
+        public ResponseEntity<Void> deleteById(
+                        @PathVariable Long id) throws Exception {
 
-        usuarioService.deleteById(id);
+                usuarioService.deleteById(id);
 
-        return ResponseEntity
-                .noContent()
-                .build();
-    }
+                return ResponseEntity
+                                .noContent()
+                                .build();
+        }
 
     @PostMapping("/{id}/foto")
     public ResponseEntity<UsuarioReaderDTO> uploadFoto(
@@ -78,9 +78,18 @@ public class UsuarioController {
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioReaderDTO> update(
             @PathVariable Long id,
-            @RequestBody UsuarioUpdateDTO usuario) throws Exception{
+            @RequestBody UsuarioUpdateDTO usuario) throws Exception {
 
-        return ResponseEntity.ok(
-                usuarioService.update(id, usuario));
-    }
+
+                return ResponseEntity.ok(
+                                usuarioService.update(id, usuario));
+        }
+
+        @GetMapping("/docentes")
+        public ResponseEntity<List<UsuarioReaderDTO>> getDocentes() {
+
+                return ResponseEntity.ok(
+                                usuarioService.findDocentes());
+
+        }
 }
