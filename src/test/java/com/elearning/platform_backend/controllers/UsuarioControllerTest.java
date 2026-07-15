@@ -51,7 +51,8 @@ public class UsuarioControllerTest {
                 Rol.ESTUDIANTE,
                 LocalDateTime.now(),
                 null,
-                "EST123"
+                "EST123",
+                null
         );
     }
 

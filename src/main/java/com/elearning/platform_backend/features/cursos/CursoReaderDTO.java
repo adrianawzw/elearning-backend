@@ -10,10 +10,14 @@ public record CursoReaderDTO (
     Long id,
     String titulo,
     String descripcion,
+    String nivel,
+    String duracion,
+    String categoria,
+    @JsonProperty("imagen_url") String imagenUrl,
     UsuarioReaderDTO docente,
-    
+
     @JsonProperty("fecha_creacion") LocalDateTime fechaCreacion,
-    
+
     List<Long> contenido,
     List<Long> evaluaciones,
     List<Long> inscripciones

@@ -70,4 +70,8 @@ public class ResultadoEvaluacionService {
 
         inscripcionRepository.save(ins);
     }
+
+    public List<ResultadoEvaluacion> buscarPorEstudiante(Long estudianteId) {
+        return resultadoRepository.findByEstudianteId(estudianteId);
+    }
 }

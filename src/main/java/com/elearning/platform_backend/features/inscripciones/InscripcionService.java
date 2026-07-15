@@ -31,10 +31,8 @@ public class InscripcionService {
 
     // Operaciones de lectura en tablas Relacionadas (3)
     public List<InscripcionReaderDTO> buscarPorEstudiante(Long estudianteId) {
-        List<Inscripcion> inscripciones = inscripcionRepository.findByEstudianteId(estudianteId);
-        if (inscripciones.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "El estudiante no tiene inscripciones");
-        return inscripciones.stream().map(InscripcionMapper::toDto).toList();
+        return inscripcionRepository.findByEstudianteId(estudianteId).stream()
+                .map(InscripcionMapper::toDto).toList();
     }
 
     // Operaciones de lectura en tablas Relacionadas (6)
@@ -43,6 +41,13 @@ public class InscripcionService {
         if (inscripciones.isEmpty())
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "El curso no tiene inscripciones");
         return inscripciones.stream().map(InscripcionMapper::toDto).toList();
+    }
+
+    public List<InscripcionReaderDTO> buscarFinalizadosPorCurso(Long cursoId) {
+        return inscripcionRepository.findByCursoId(cursoId).stream()
+                .filter(i -> "FINALIZADO".equals(i.getEstado()))
+                .map(InscripcionMapper::toDto)
+                .toList();
     }
 
     public List<InscripcionReaderDTO> buscarPorEstado(String estado) {
@@ -63,7 +68,7 @@ public class InscripcionService {
         Inscripcion inscripcion = new Inscripcion();
         inscripcion.setEstudiante(estudiante);
         inscripcion.setCurso(curso);
-        inscripcion.setEstado(dto.estado());
+        inscripcion.setEstado("ACTIVO");
         inscripcion.setFechaInscripcion(LocalDateTime.now());
 
         return InscripcionMapper.toDto(inscripcionRepository.save(inscripcion));

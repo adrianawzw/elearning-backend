@@ -40,40 +40,64 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
 
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/cursos/publicos").permitAll()
+                        // ESTUDIANTES
+                        .requestMatchers(HttpMethod.GET, "/estudiantes/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.PUT, "/estudiantes/**").hasRole("ESTUDIANTE")
                         // USUARIOS
+                        .requestMatchers(HttpMethod.GET, "/usuarios/me").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.GET, "/usuarios/docentes").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.POST, "/usuarios/*/foto").hasAnyRole("DOCENTE", "ESTUDIANTE")
                         // SOLO DOCENTE
                         .requestMatchers(HttpMethod.GET, "/usuarios").hasRole("DOCENTE")
-                        .requestMatchers(HttpMethod.DELETE,"/usuarios/**").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.DELETE, "/usuarios/**").hasRole("DOCENTE")
                         // DOCENTE Y ESTUDIANTE
-                        .requestMatchers(HttpMethod.POST,"/usuarios/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.POST, "/usuarios/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
                         .requestMatchers(HttpMethod.GET, "/usuarios/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
-                        .requestMatchers(HttpMethod.PUT,"/usuarios/**").hasAnyRole("DOCENTE","ESTUDIANTE")
+                        .requestMatchers(HttpMethod.PUT, "/usuarios/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
                         // CURSOS
+                        .requestMatchers(HttpMethod.GET, "/cursos").hasAnyRole("DOCENTE", "ESTUDIANTE")
                         .requestMatchers(HttpMethod.GET, "/cursos/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.POST, "/cursos/upload-imagen").hasRole("DOCENTE")
                         .requestMatchers(HttpMethod.POST, "/cursos/**").hasRole("DOCENTE")
                         .requestMatchers(HttpMethod.PUT, "/cursos/**").hasRole("DOCENTE")
                         .requestMatchers(HttpMethod.DELETE, "/cursos/**").hasRole("DOCENTE")
                         // CONTENIDOS
+                        .requestMatchers(HttpMethod.GET, "/contenidos").hasAnyRole("DOCENTE", "ESTUDIANTE")
                         .requestMatchers(HttpMethod.GET, "/contenidos/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.POST, "/contenidos/upload").hasRole("DOCENTE")
                         .requestMatchers(HttpMethod.POST, "/contenidos/**").hasRole("DOCENTE")
                         .requestMatchers(HttpMethod.PUT, "/contenidos/**").hasRole("DOCENTE")
                         .requestMatchers(HttpMethod.DELETE, "/contenidos/**").hasRole("DOCENTE")
                         // EVALUACIONES
+                        .requestMatchers(HttpMethod.GET, "/evaluaciones").hasAnyRole("DOCENTE", "ESTUDIANTE")
                         .requestMatchers(HttpMethod.GET, "/evaluaciones/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
                         .requestMatchers(HttpMethod.POST, "/evaluaciones/**").hasRole("DOCENTE")
                         .requestMatchers(HttpMethod.PUT, "/evaluaciones/**").hasRole("DOCENTE")
                         .requestMatchers(HttpMethod.DELETE, "/evaluaciones/**").hasRole("DOCENTE")
+                        // PREGUNTAS
+                        .requestMatchers(HttpMethod.GET, "/preguntas/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.POST, "/preguntas/**").hasRole("DOCENTE")
+                        .requestMatchers(HttpMethod.DELETE, "/preguntas/**").hasRole("DOCENTE")
+                        // PROGRESOS
+                        .requestMatchers(HttpMethod.GET, "/progresos/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.POST, "/progresos/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.DELETE, "/progresos/**").hasRole("DOCENTE")
+                        // RESULTADOS EVALUACION
+                        .requestMatchers(HttpMethod.GET, "/resultados-evaluacion/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.POST, "/resultados-evaluacion/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.PUT, "/resultados-evaluacion/**").hasRole("DOCENTE")
                         // INSCRIPCIONES
+                        .requestMatchers(HttpMethod.GET, "/inscripciones/estudiante/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.GET, "/inscripciones/curso/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
+                        .requestMatchers(HttpMethod.POST, "/inscripciones").hasRole("ESTUDIANTE")
                         .requestMatchers(HttpMethod.GET, "/inscripciones").hasRole("DOCENTE")
                         .requestMatchers(HttpMethod.GET, "/inscripciones/estado/**").hasRole("DOCENTE")
                         .requestMatchers(HttpMethod.PATCH, "/inscripciones/**").hasRole("DOCENTE")
                         .requestMatchers(HttpMethod.DELETE, "/inscripciones/**").hasRole("DOCENTE")
-                        .requestMatchers(HttpMethod.GET, "/inscripciones/estudiante/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
-                        .requestMatchers(HttpMethod.GET, "/inscripciones/curso/**").hasAnyRole("DOCENTE", "ESTUDIANTE")
-                        .requestMatchers(HttpMethod.POST, "/inscripciones/**").hasRole("ESTUDIANTE")
 
                         .anyRequest()
                         .authenticated())

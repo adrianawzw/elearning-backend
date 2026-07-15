@@ -36,7 +36,8 @@ public class UsuarioMapper {
                 user.getRol(),
                 user.getFechaRegistro(),
                 especialidad,
-                codigoAlumno
+                codigoAlumno,
+                user.getFotoUrl()
         );
     }
 
@@ -49,7 +50,8 @@ public class UsuarioMapper {
                 docente.getUsuario().getRol(),
                 docente.getUsuario().getFechaRegistro(),
                 docente.getEspecialidad(),
-                null
+                null,
+                docente.getUsuario().getFotoUrl()
         );
     }
 }

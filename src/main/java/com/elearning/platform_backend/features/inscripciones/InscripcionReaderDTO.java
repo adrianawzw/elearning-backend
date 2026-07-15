@@ -10,6 +10,8 @@ public record InscripcionReaderDTO(
         @JsonProperty("estudiante_nombre") String estudianteNombre,
         @JsonProperty("curso_id") Long cursoId,
         @JsonProperty("curso_titulo") String cursoTitulo,
+        @JsonProperty("curso_categoria") String cursoCategoria,
         @JsonProperty("fecha_inscripcion") LocalDate fechaInscripcion,
-        String estado) {
+        String estado,
+        @JsonProperty("nota_final") Double notaFinal) {
 }

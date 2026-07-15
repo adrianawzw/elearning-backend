@@ -16,6 +16,8 @@ public record ContenidoWriterDTO(
     @NotBlank
     String tipo,
 
+    String duracion,
+
     @NotNull
     @JsonProperty("curso_id") Long cursoId
 ) {}

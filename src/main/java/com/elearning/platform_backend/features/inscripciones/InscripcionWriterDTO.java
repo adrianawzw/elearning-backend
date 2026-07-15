@@ -6,6 +6,5 @@ import jakarta.validation.constraints.NotNull;
 
 public record InscripcionWriterDTO(
     @NotNull @JsonProperty("estudiante_id") Long estudianteId,
-    @NotNull @JsonProperty("curso_id") Long cursoId,
-    @NotBlank String estado
+    @NotNull @JsonProperty("curso_id") Long cursoId
 ) {}

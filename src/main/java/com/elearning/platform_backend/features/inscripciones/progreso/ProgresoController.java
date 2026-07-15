@@ -36,6 +36,14 @@ public class ProgresoController {
                 return progresoService.buscarPorInscripcion(id);
         }
 
+        @GetMapping("/estudiante/{estudianteId}")
+        public ResponseEntity<List<Progreso>> getCompletadosByEstudiante(
+                        @PathVariable Long estudianteId) {
+
+                return ResponseEntity.ok(
+                                progresoService.buscarCompletadosPorEstudiante(estudianteId));
+        }
+
         @PostMapping
         public ResponseEntity<Progreso> create(
                         @RequestBody Progreso progreso) {

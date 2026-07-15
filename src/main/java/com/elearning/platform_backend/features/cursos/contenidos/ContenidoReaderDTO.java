@@ -5,5 +5,6 @@ public record ContenidoReaderDTO(
     String titulo,
     String urlMaterial,
     String tipo,
+    String duracion,
     Long cursoId
 ) {}

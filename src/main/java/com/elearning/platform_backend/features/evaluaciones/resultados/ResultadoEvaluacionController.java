@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/resultados-evaluacion")
 @RequiredArgsConstructor
@@ -43,6 +45,14 @@ public class ResultadoEvaluacionController {
 
         return ResponseEntity.ok(
                 resultadoEvaluacionService.calcularPromedio(inscripcionId));
+    }
+
+    @GetMapping("/estudiante/{estudianteId}")
+    public ResponseEntity<List<ResultadoEvaluacion>> getByEstudiante(
+            @PathVariable Long estudianteId) {
+
+        return ResponseEntity.ok(
+                resultadoEvaluacionService.buscarPorEstudiante(estudianteId));
     }
 
     @Data

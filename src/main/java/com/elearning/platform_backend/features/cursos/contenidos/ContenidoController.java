@@ -3,9 +3,11 @@ package com.elearning.platform_backend.features.cursos.contenidos;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class ContenidoController {
 
     private final ContenidoService contenidoService;
+    private final SupabaseStorageService storageService;
 
     @GetMapping
     public ResponseEntity<List<ContenidoReaderDTO>> getAll() {
@@ -52,5 +55,16 @@ public class ContenidoController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         contenidoService.eliminar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+        try {
+            String url = storageService.uploadFile(file);
+            return ResponseEntity.ok(url);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al subir archivo: " + e.getMessage());
+        }
     }
 }
