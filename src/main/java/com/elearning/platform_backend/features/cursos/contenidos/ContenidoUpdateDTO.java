@@ -13,5 +13,7 @@ public record ContenidoUpdateDTO(
     @JsonProperty("url_material") String urlMaterial,
 
     @NotBlank
-    String tipo
+    String tipo,
+
+    String duracion
 ) {}

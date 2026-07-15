@@ -31,6 +31,11 @@ public class InscripcionController {
         return ResponseEntity.ok(inscripcionService.buscarPorCurso(id));
     }
 
+    @GetMapping("/curso/{id}/finalizados")
+    public ResponseEntity<List<InscripcionReaderDTO>> getFinalizadosByCurso(@PathVariable Long id) {
+        return ResponseEntity.ok(inscripcionService.buscarFinalizadosPorCurso(id));
+    }
+
     @GetMapping("/estado/{estado}")
     public ResponseEntity<List<InscripcionReaderDTO>> getByEstado(@PathVariable String estado) {
         return ResponseEntity.ok(inscripcionService.buscarPorEstado(estado));

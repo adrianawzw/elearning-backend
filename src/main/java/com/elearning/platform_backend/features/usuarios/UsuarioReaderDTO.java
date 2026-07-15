@@ -10,7 +10,7 @@ public record UsuarioReaderDTO(Long id,
     String apellidos,
     Rol rol,
     @JsonProperty("fecha_registro") LocalDateTime fechaRegistro,
-    
     String especialidad,
-    @JsonProperty("codigo_alumno") String codigoAlumno
+    @JsonProperty("codigo_alumno") String codigoAlumno,
+    @JsonProperty("foto_url") String fotoUrl
 ) {}

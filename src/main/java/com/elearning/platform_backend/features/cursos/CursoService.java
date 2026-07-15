@@ -47,6 +47,12 @@ public class CursoService {
         return CursoMapper.toDto(curso);
     }
 
+    public List<CursoReaderDTO> findAllPublicos() {
+        return cursoRepository.findAll().stream()
+                .map(CursoMapper::toDto)
+                .toList();
+    }
+
     // Método GET para obtener a todos los Cursos
     public List<CursoReaderDTO> findAll() {
         if (cursoRepository.count() == 0)
@@ -112,6 +118,10 @@ public class CursoService {
 
         curso.setTitulo(dto.titulo());
         curso.setDescripcion(dto.descripcion());
+        curso.setNivel(dto.nivel());
+        curso.setDuracion(dto.duracion());
+        curso.setCategoria(dto.categoria());
+        curso.setImagenUrl(dto.imagenUrl());
         curso.setDocente(docente);
 
         return CursoMapper.toDto(cursoRepository.save(curso));

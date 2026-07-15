@@ -38,4 +38,7 @@ public class Usuario {
     private Rol rol;
 
     private LocalDateTime fechaRegistro;
+
+    @Column(name = "foto_url")
+    private String fotoUrl;
 }

@@ -29,6 +29,14 @@ public class PreguntaController {
                 preguntaService.buscarPorValor(puntos));
     }
 
+    @GetMapping("/evaluacion/{evaluacionId}")
+    public ResponseEntity<List<Pregunta>> getByEvaluacion(
+            @PathVariable Long evaluacionId) {
+
+        return ResponseEntity.ok(
+                preguntaService.buscarPorEvaluacion(evaluacionId));
+    }
+
     @PostMapping
     public ResponseEntity<Pregunta> create(
             @RequestBody Pregunta pregunta) {

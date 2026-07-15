@@ -9,6 +9,7 @@ public class InscripcionMapper {
                 ? inscripcion.getEstudiante().getNombres() + " " + inscripcion.getEstudiante().getApellidos()
                 : null;
         String cursoTitulo = inscripcion.getCurso() != null ? inscripcion.getCurso().getTitulo() : null;
+        String cursoCategoria = inscripcion.getCurso() != null ? inscripcion.getCurso().getCategoria() : null;
         LocalDate fechaInscripcion = inscripcion.getFechaInscripcion() != null
                 ? inscripcion.getFechaInscripcion().toLocalDate()
                 : null;
@@ -19,7 +20,9 @@ public class InscripcionMapper {
                 estudianteNombre,
                 inscripcion.getCurso() != null ? inscripcion.getCurso().getId() : null,
                 cursoTitulo,
+                cursoCategoria,
                 fechaInscripcion,
-                inscripcion.getEstado());
+                inscripcion.getEstado(),
+                inscripcion.getNotaFinal());
     }
 }

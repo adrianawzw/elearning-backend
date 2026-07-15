@@ -8,4 +8,5 @@ import java.util.List;
 public interface PreguntaRepository extends JpaRepository<Pregunta, Long>{
     
     List<Pregunta> findByValorPunto(Integer valorPunto);
+    List<Pregunta> findByEvaluacionId(Long evaluacionId);
 }

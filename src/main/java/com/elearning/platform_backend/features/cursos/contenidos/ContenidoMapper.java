@@ -9,6 +9,7 @@ public class ContenidoMapper {
         contenido.setTitulo(dto.titulo());
         contenido.setUrlMaterial(dto.urlMaterial());
         contenido.setTipo(dto.tipo());
+        contenido.setDuracion(dto.duracion());
         contenido.setCurso(curso);
         return contenido;
     }
@@ -19,6 +20,7 @@ public class ContenidoMapper {
             contenido.getTitulo(),
             contenido.getUrlMaterial(),
             contenido.getTipo(),
+            contenido.getDuracion(),
             contenido.getCurso() != null ? contenido.getCurso().getId() : null
         );
     }

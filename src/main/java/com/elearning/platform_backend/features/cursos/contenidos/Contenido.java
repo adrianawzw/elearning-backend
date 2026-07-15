@@ -33,6 +33,8 @@ public class Contenido {
 
     private String tipo; // VIDEO o DOCUMENTO
 
+    private String duracion;
+
     @ManyToOne
     @JoinColumn(name = "curso_id")
     @JsonIgnoreProperties({ "contenidos", "evaluaciones", "inscripciones" })

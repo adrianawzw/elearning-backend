@@ -24,6 +24,10 @@ public class PreguntaService {
         return preguntaRepository.findByValorPunto(puntos);
     }
 
+    public List<Pregunta> buscarPorEvaluacion(Long evaluacionId){
+        return preguntaRepository.findByEvaluacionId(evaluacionId);
+    }
+
     public void eliminar(Long id){
         preguntaRepository.deleteById(id);
     }

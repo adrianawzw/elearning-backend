@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.elearning.platform_backend.features.usuarios.docentes.Docente;
 import com.elearning.platform_backend.features.usuarios.docentes.DocenteRepository;
 import com.elearning.platform_backend.features.usuarios.estudiantes.Estudiante;
 import com.elearning.platform_backend.features.usuarios.estudiantes.EstudianteRepository;
+import com.elearning.platform_backend.features.cursos.contenidos.SupabaseStorageService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class UsuarioService {
     private final DocenteRepository docenteRepository;
     private final EstudianteRepository estudianteRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SupabaseStorageService supabaseStorageService;
 
     @Transactional
     public UsuarioReaderDTO create(UsuarioWriterDTO dto) {
@@ -71,6 +74,12 @@ public class UsuarioService {
         return usuarioRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
+    public UsuarioReaderDTO findByEmail(String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+        return findById(usuario.getId());
+    }
+
     public List<UsuarioReaderDTO> findAll() {
         if (usuarioRepository.count() == 0) throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay usuarios registrados");
         
@@ -110,6 +119,18 @@ public class UsuarioService {
             estudianteRepository.save(estudiante);
         }
 
+        return findById(id);
+    }
+
+    public UsuarioReaderDTO uploadFoto(Long id, MultipartFile file) throws Exception {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+        if (usuario.getFotoUrl() != null) {
+            supabaseStorageService.deleteFile(usuario.getFotoUrl());
+        }
+        String url = supabaseStorageService.uploadImage(file, "avatares");
+        usuario.setFotoUrl(url);
+        usuarioRepository.save(usuario);
         return findById(id);
     }
 

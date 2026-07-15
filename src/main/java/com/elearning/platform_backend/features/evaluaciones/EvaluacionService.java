@@ -33,10 +33,8 @@ public class EvaluacionService {
     }
 
     public List<EvaluacionReaderDTO> buscarPorCurso(Long cursoId) {
-        List<Evaluacion> evaluaciones = evaluacionRepository.findByCursoId(cursoId);
-        if (evaluaciones.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay evaluaciones para este curso");
-        return evaluaciones.stream().map(EvaluacionMapper::toDto).toList();
+        return evaluacionRepository.findByCursoId(cursoId)
+                .stream().map(EvaluacionMapper::toDto).toList();
     }
 
     public List<EvaluacionReaderDTO> buscarPorTipo(TipoEvaluacion tipo) {
