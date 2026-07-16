@@ -142,12 +142,8 @@ public class UsuarioService {
                 .toList();
     }
 
-    }
-
     private String generarCodigoAlumno() {
-
         long cantidad = estudianteRepository.count() + 1;
-
         return String.format("E%04d", cantidad);
     }
 }
